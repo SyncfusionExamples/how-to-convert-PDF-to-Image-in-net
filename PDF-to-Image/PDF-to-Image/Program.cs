@@ -1,5 +1,4 @@
 ﻿using Syncfusion.PdfToImageConverter;
-using Syncfusion.Drawing;
 
 namespace PDF_to_Image {
     internal class Program {
@@ -12,11 +11,7 @@ namespace PDF_to_Image {
             //Convert PDF to Image.
             Stream[] outputStream = imageConverter.Convert(0, imageConverter.PageCount - 1, false, false);
             for (int i = 0; i < outputStream.Length; i++) {
-                Image image = Image.FromStream(outputStream[i]);
-                using (FileStream stream = new FileStream("sample-" + i + ".png", FileMode.Create, FileAccess.Write)) {
-                    byte[] data = image.ImageData;
-                    stream.Write(data, 0, data.Length);
-                }
+                File.WriteAllBytes("sample-" + i + ".png", (outputStream[i] as MemoryStream).ToArray());                
             }
         }
     }
